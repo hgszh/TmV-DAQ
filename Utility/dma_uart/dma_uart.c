@@ -1,6 +1,6 @@
 #include "dma_uart.h"
 #include "dma.h"
-#include "usart.h"
+#include "task.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +16,7 @@ static TaskHandle_t  xUartReceiverTaskHandle = NULL;     // UART接收任务句�
 static UART_Instance *get_uart_instance(UART_HandleTypeDef *huart);
 static void           uart_start_transmit(UART_Instance *instance);
 static void           rs485_demo_task(void *pvParameters);
+static void           rs485_1_printf_task(void *pvParameters);
 
 /*********************************** 公共接口函数 ***********************************/
 
@@ -33,14 +34,11 @@ void init_board_uart(UART_HandleTypeDef *huart)
     instance->huart = huart;
 
     // 创建流式缓冲区（内存自动对齐）
-    instance->xRxStreamBuffer =
-        xStreamBufferCreate(STREAM_BUF_ALIGN(UART_RX_FIFO_SIZE), 1);
-    instance->xTxStreamBuffer =
-        xStreamBufferCreate(STREAM_BUF_ALIGN(UART_TX_FIFO_SIZE), 1);
+    instance->xRxStreamBuffer = xStreamBufferCreate(STREAM_BUF_ALIGN(UART_RX_FIFO_SIZE), 1);
+    instance->xTxStreamBuffer = xStreamBufferCreate(STREAM_BUF_ALIGN(UART_TX_FIFO_SIZE), 1);
 
     // 启动DMA接收（支持空闲中断检测）
-    HAL_UARTEx_ReceiveToIdle_DMA(huart, instance->rx_dma_buffer,
-                                 sizeof(instance->rx_dma_buffer));
+    HAL_UARTEx_ReceiveToIdle_DMA(huart, instance->rx_dma_buffer, sizeof(instance->rx_dma_buffer));
 }
 
 /**
@@ -49,8 +47,16 @@ void init_board_uart(UART_HandleTypeDef *huart)
  */
 void start_rs485_demo_task(void)
 {
-    xTaskCreate(rs485_demo_task, "rs485_demo_task", 512, NULL, 3,
-                &xUartReceiverTaskHandle);
+    xTaskCreate(rs485_demo_task, "rs485_demo_task", 512, NULL, 3, &xUartReceiverTaskHandle);
+}
+
+/**
+ * @brief 启动RS485_1打印任务
+ * @note 创建任务使RS485_1打印电压和温度值
+ */
+void start_rs485_1_printf_task(void)
+{
+    xTaskCreate(rs485_1_printf_task, "rs485_1_printf_task", 512, NULL, 1, NULL);
 }
 
 /**
@@ -61,8 +67,22 @@ void start_rs485_demo_task(void)
 size_t get_uart_fifo_count(UART_HandleTypeDef *huart)
 {
     UART_Instance *instance = get_uart_instance(huart);
-    return instance ? xStreamBufferBytesAvailable(instance->xRxStreamBuffer)
-                    : 0;
+    return instance ? xStreamBufferBytesAvailable(instance->xRxStreamBuffer) : 0;
+}
+
+/**
+ * @brief  从指定UART实例的接收流缓冲区读取数据
+ * @param  huart  目标UART外设句柄（指向huart2/huart3）
+ * @param  buf    接收缓冲区指针
+ * @param  size   期望读取的最大字节数
+ * @return 实际读取的字节数
+ */
+uint16_t uart_read(UART_HandleTypeDef *huart, uint8_t *buf, uint16_t size)
+{
+    UART_Instance *instance = get_uart_instance(huart);
+    if (!instance)
+        return 0;
+    return xStreamBufferReceive(instance->xRxStreamBuffer, buf, size, 0);
 }
 
 /**
@@ -107,8 +127,7 @@ void board_printf(UART_HandleTypeDef *huart, const char *format, ...)
     va_end(args); // 释放变参资源
 
     // 将格式化后的数据写入fifo
-    xStreamBufferSend(instance->xTxStreamBuffer, temp_buffer, length,
-                      portMAX_DELAY);
+    xStreamBufferSend(instance->xTxStreamBuffer, temp_buffer, length, portMAX_DELAY);
 
     // 释放动态分配的内存
     if (temp_buffer != static_buffer)
@@ -152,19 +171,16 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
     size_t len = Size - instance->rx_fifo_pos; ///< 计算当前接收的数据长度
 
     xStreamBufferSendFromISR(instance->xRxStreamBuffer,
-                             &instance->rx_dma_buffer[instance->rx_fifo_pos],
-                             len, &xHigherPriorityTaskWoken);
+                             &instance->rx_dma_buffer[instance->rx_fifo_pos], len,
+                             &xHigherPriorityTaskWoken);
 
     // 更新实例专属的位置指针
-    instance->rx_fifo_pos =
-        (instance->rx_fifo_pos + len) % UART_RX_DMA_BUF_SIZE;
+    instance->rx_fifo_pos = (instance->rx_fifo_pos + len) % UART_RX_DMA_BUF_SIZE;
 
     /* 处理接收空闲中断，通知处理收到的数据*/
-    if (huart->RxEventType == HAL_UART_RXEVENT_IDLE &&
-        xUartReceiverTaskHandle != NULL)
+    if (huart->RxEventType == HAL_UART_RXEVENT_IDLE && xUartReceiverTaskHandle != NULL)
     {
-        vTaskNotifyGiveFromISR(xUartReceiverTaskHandle,
-                               &xHigherPriorityTaskWoken);
+        vTaskNotifyGiveFromISR(xUartReceiverTaskHandle, &xHigherPriorityTaskWoken);
     }
 
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
@@ -182,9 +198,9 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
     if (!instance)
         return;
     // 从fifo中读取下一块数据
-    size_t len = xStreamBufferReceiveFromISR(
-        instance->xTxStreamBuffer, instance->tx_dma_buffer,
-        sizeof(instance->tx_dma_buffer), &xHigherPriorityTaskWoken);
+    size_t len =
+        xStreamBufferReceiveFromISR(instance->xTxStreamBuffer, instance->tx_dma_buffer,
+                                    sizeof(instance->tx_dma_buffer), &xHigherPriorityTaskWoken);
 
     if (len > 0)
     {
@@ -218,15 +234,12 @@ static void rs485_demo_task(void *pvParameters)
     HAL_GPIO_WritePin(TX_EN_2_GPIO_Port, TX_EN_2_Pin, GPIO_PIN_RESET);
     init_board_uart(&RS485_2);
 
-    UART_Instance *instance = (UART_Instance *)get_uart_instance(&RS485_2);
     while (1)
     {
-        // 等待空闲中断通知（阻塞等待）
+        // 等待空闲中断通知
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-
-        // 读取流缓冲区中的所有数据
-        size_t available =
-            xStreamBufferBytesAvailable(instance->xRxStreamBuffer);
+        // 获取RS485_2收到了多少数据
+        size_t available = get_uart_fifo_count(&RS485_2);
         if (available > 0)
         {
             // 分配内存时多预留1字节用于存放结束符
@@ -235,10 +248,9 @@ static void rs485_demo_task(void *pvParameters)
             {
                 // 初始化缓冲区
                 memset(buffer, 0, available + 1);
-                // 读取数据
-                size_t read = xStreamBufferReceive(instance->xRxStreamBuffer,
-                                                   buffer, available, 0);
-                // 添加字符串结束符
+                // 读取RS485_2的数据
+                size_t read = uart_read(&RS485_2, buffer, available);
+                // 添加字符串结束符确保安全
                 buffer[read] = '\0';
 
                 // 这里处理数据
@@ -246,7 +258,7 @@ static void rs485_demo_task(void *pvParameters)
                 vTaskDelay(5000);
                 for (size_t i = 0; i < 100; i++)
                 {
-                    board_printf(&RS485_1, "Received %d bytes:\n ", read);
+                    board_printf(&RS485_1, L_GREEN "Received %d bytes:\n" NONE, read);
                     board_printf(&RS485_1, "%s\n", buffer);
                     vTaskDelay(100);
                     HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
@@ -254,6 +266,22 @@ static void rs485_demo_task(void *pvParameters)
                 vPortFree(buffer);
             }
         }
+    }
+}
+
+#include "ads1262.h"
+/**
+ * @brief RS485_1打印任务
+ * @param pvParameters 任务参数（未使用）
+ * @note 实现RS485_1打印电压和温度值
+ */
+static void rs485_1_printf_task(void *pvParameters)
+{
+    adcStartupRoutine();
+    while (1)
+    {
+        print_board_uid(&RS485_1);
+        vTaskDelay(1000);
     }
 }
 
@@ -266,15 +294,13 @@ static void rs485_demo_task(void *pvParameters)
  */
 static void uart_start_transmit(UART_Instance *instance)
 {
-    size_t dma_len =
-        xStreamBufferReceive(instance->xTxStreamBuffer, instance->tx_dma_buffer,
-                             sizeof(instance->tx_dma_buffer), 0);
+    size_t dma_len = xStreamBufferReceive(instance->xTxStreamBuffer, instance->tx_dma_buffer,
+                                          sizeof(instance->tx_dma_buffer), 0);
 
     if (dma_len > 0)
     {
         instance->tx_busy_flag = true;
-        HAL_UART_Transmit_DMA(instance->huart, instance->tx_dma_buffer,
-                              dma_len);
+        HAL_UART_Transmit_DMA(instance->huart, instance->tx_dma_buffer, dma_len);
     }
 }
 
@@ -310,17 +336,14 @@ void get_uid_string(char *uid_str)
     int offset = 0;
     for (int i = 3; i >= 0; i--)
     {
-        offset += snprintf(uid_str + offset, 3, "%02X",
-                           (uint8_t)(uid_w2 >> (i * 8)) & 0xFF);
+        offset += snprintf(uid_str + offset, 3, "%02X", (uint8_t)(uid_w2 >> (i * 8)) & 0xFF);
     }
     for (int i = 3; i >= 0; i--)
     {
-        offset += snprintf(uid_str + offset, 3, "%02X",
-                           (uint8_t)(uid_w1 >> (i * 8)) & 0xFF);
+        offset += snprintf(uid_str + offset, 3, "%02X", (uint8_t)(uid_w1 >> (i * 8)) & 0xFF);
     }
     for (int i = 3; i >= 0; i--)
     {
-        offset += snprintf(uid_str + offset, 3, "%02X",
-                           (uint8_t)(uid_w0 >> (i * 8)) & 0xFF);
+        offset += snprintf(uid_str + offset, 3, "%02X", (uint8_t)(uid_w0 >> (i * 8)) & 0xFF);
     }
 }

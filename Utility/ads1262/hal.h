@@ -18,14 +18,14 @@
  *    from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUMOSIG, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
  * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUMOSIG, BUT NOT LIMITED TO,
  * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
  * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUMOSIG NEGLIGENCE OR
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * --/COPYRIGHT--*/
@@ -38,6 +38,7 @@
 // Standard libraries
 //
 //****************************************************************************
+#include "gpio.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -54,7 +55,6 @@
 //
 //*****************************************************************************
 void    delay_ms(uint32_t delay_time_ms);
-void    delay_ns(uint32_t delay_time_us);
 void    spiSendReceiveArrays(uint8_t DataTx[], uint8_t DataRx[], uint8_t byteLength);
 uint8_t spiSendReceiveByte(uint8_t dataTx);
 
@@ -63,10 +63,19 @@ uint8_t spiSendReceiveByte(uint8_t dataTx);
 // Macros
 //
 //*****************************************************************************
-/** Alias used for setting GPIOs pins to the logic "high" state */
-#define HIGH ((bool)true)
 
-/** Alias used for setting GPIOs pins to the logic "low" state */
-#define LOW ((bool)false)
+#define SCLK_PORT ADC_SCLK_GPIO_Port
+#define SCLK_PIN  ADC_SCLK_Pin
+#define MOSI_PORT ADC_DIN_GPIO_Port
+#define MOSI_PIN  ADC_DIN_Pin
+#define MISO_PORT ADC_DOUT_GPIO_Port
+#define MISO_PIN  ADC_DOUT_Pin
+
+#define HIGH 1
+#define LOW  0
+
+#define SET_SCLK(level) (level ? (SCLK_PORT->BSRR = SCLK_PIN) : (SCLK_PORT->BRR = SCLK_PIN))
+#define SET_MOSI(level) (level ? (MOSI_PORT->BSRR = MOSI_PIN) : (MOSI_PORT->BRR = MOSI_PIN))
+#define GET_MISO()      ((MISO_PORT->IDR & MISO_PIN) ? HIGH : LOW)
 
 #endif /* HAL_H_ */

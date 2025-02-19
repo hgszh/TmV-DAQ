@@ -1,12 +1,12 @@
 ---
-Language: Cpp
-BasedOnStyle: LLVM
-AlignConsecutiveDeclarations: true
-AlignConsecutiveMacros: true
-ColumnLimit: 80
-IndentWidth: 4
-UseTab: Never
-BreakBeforeBraces: Allman
-AllowShortFunctionsOnASingleLine: Empty
-IndentCaseLabels: true
-ReflowComments: false  # 禁止注释的自动换行
+Language: Cpp                     
+BasedOnStyle: LLVM                #基础风格采用LLVM规范
+AlignConsecutiveDeclarations: true #对齐连续变量声明(列对齐变量名和类型)
+AlignConsecutiveMacros: true       #对齐连续宏定义(列对齐宏名和值)
+ColumnLimit: 100                   #单行最大字符数(保持代码在80列内换行)
+IndentWidth: 4                    #缩进宽度为4个空格
+UseTab: Never                     #禁止使用制表符(Tab)，始终使用空格
+BreakBeforeBraces: Allman         #换行风格: 所有大括号换行(Allman风格)
+AllowShortFunctionsOnASingleLine: Empty #仅允许空函数体写成单行
+IndentCaseLabels: true            #case标签在switch语句中缩进
+ReflowComments: false             #禁用注释自动换行(保持注释原有排版)

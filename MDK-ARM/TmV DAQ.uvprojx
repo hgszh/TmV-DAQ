@@ -337,7 +337,7 @@
               <MiscControls />
               <Define>USE_HAL_DRIVER,STM32G0B1xx</Define>
               <Undefine />
-              <IncludePath>../Core/Inc;../Drivers/STM32G0xx_HAL_Driver/Inc;../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G0xx/Include;../Drivers/CMSIS/Include;../FATFS/Target;../FATFS/App;../Middlewares/Third_Party/FatFs/src;../USB_Device/App;../USB_Device/Target;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;../Utility/ads1262;../Utility/dma_uart;../Lib/lwrb;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM0</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32G0xx_HAL_Driver/Inc;../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G0xx/Include;../Drivers/CMSIS/Include;../FATFS/Target;../FATFS/App;../Middlewares/Third_Party/FatFs/src;../USB_Device/App;../USB_Device/Target;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;../Utility/ads1262;../Utility/dma_uart;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM0</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2585,16 +2585,6 @@
               <FileName>dma_uart.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Utility\dma_uart\dma_uart.h</FilePath>
-            </File>
-            <File>
-              <FileName>lwrb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Lib\lwrb\lwrb.c</FilePath>
-            </File>
-            <File>
-              <FileName>lwrb.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Lib\lwrb\lwrb.h</FilePath>
             </File>
           </Files>
         </Group>

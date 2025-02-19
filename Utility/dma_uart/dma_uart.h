@@ -3,11 +3,8 @@
 
 #include "FreeRTOS.h"
 #include "stream_buffer.h"
-#include "task.h"
 #include "usart.h"
 #include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
 
 #define RS485_1 huart2
 #define RS485_2 huart3
@@ -18,8 +15,7 @@
 #define UART_TX_FIFO_SIZE    1024
 
 // 流缓冲区对齐处理
-#define STREAM_BUF_ALIGN(size)                                                 \
-    ((size + sizeof(size_t) - 1) & ~(sizeof(size_t) - 1))
+#define STREAM_BUF_ALIGN(size) ((size + sizeof(size_t) - 1) & ~(sizeof(size_t) - 1))
 
 typedef struct
 {
@@ -32,12 +28,15 @@ typedef struct
     size_t               rx_fifo_pos;
 } UART_Instance;
 
-void   init_board_uart(UART_HandleTypeDef *huart);
-void   board_printf(UART_HandleTypeDef *huart, const char *format, ...);
-size_t get_uart_fifo_count(UART_HandleTypeDef *huart);
-void   get_uid_string(char *uid_str);
-void   print_board_uid(UART_HandleTypeDef *huart);
-void   start_rs485_demo_task(void);
+void     init_board_uart(UART_HandleTypeDef *huart);
+void     board_printf(UART_HandleTypeDef *huart, const char *format, ...);
+size_t   get_uart_fifo_count(UART_HandleTypeDef *huart);
+uint16_t uart_read(UART_HandleTypeDef *huart, uint8_t *buf, uint16_t size);
+void     get_uid_string(char *uid_str);
+void     print_board_uid(UART_HandleTypeDef *huart);
+
+void start_rs485_demo_task(void);
+void start_rs485_1_printf_task(void);
 
 /*************************Printf彩色效果**************************************************/
 #define NONE      "\33[0m"

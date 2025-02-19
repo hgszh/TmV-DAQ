@@ -58,7 +58,6 @@
 "tmv daq\ads1262.o"
 "tmv daq\hal.o"
 "tmv daq\dma_uart.o"
-"tmv daq\lwrb.o"
 "tmv daq\croutine.o"
 "tmv daq\event_groups.o"
 "tmv daq\list.o"

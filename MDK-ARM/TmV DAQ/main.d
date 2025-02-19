@@ -43,9 +43,6 @@ tmv\ daq/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_tim_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart_ex.h \
-  ..\FATFS\App\app_fatfs.h ..\Middlewares\Third_Party\FatFs\src\ff.h \
-  ..\Middlewares\Third_Party\FatFs\src\integer.h \
-  ..\FATFS\Target\ffconf.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -60,16 +57,19 @@ tmv\ daq/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
+  ..\Core\Inc\dma.h ..\FATFS\App\app_fatfs.h \
+  ..\Middlewares\Third_Party\FatFs\src\ff.h \
+  ..\Middlewares\Third_Party\FatFs\src\integer.h \
+  ..\FATFS\Target\ffconf.h \
   ..\Middlewares\Third_Party\FatFs\src\ff_gen_drv.h \
   ..\Middlewares\Third_Party\FatFs\src\diskio.h \
-  ..\FATFS\Target\user_diskio.h ..\Core\Inc\dma.h ..\Core\Inc\gpio.h \
-  ..\Core\Inc\i2c.h ..\Core\Inc\rtc.h ..\Core\Inc\spi.h \
-  ..\Core\Inc\usart.h ..\USB_Device\App\usb_device.h \
+  ..\FATFS\Target\user_diskio.h ..\Core\Inc\i2c.h ..\Core\Inc\rtc.h \
+  ..\Core\Inc\spi.h ..\Core\Inc\usart.h ..\USB_Device\App\usb_device.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \
   ..\USB_Device\Target\usbd_conf.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\Utility\dma_uart\dma_uart.h \
+  ..\Core\Inc\gpio.h ..\Utility\dma_uart\dma_uart.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\stream_buffer.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdbool.h

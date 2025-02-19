@@ -42,17 +42,6 @@
 
 //****************************************************************************
 //
-// Macros
-//
-//****************************************************************************
-/* Alias used for setting GPIOs pins to the logic "high" state */
-#define HIGH ((bool)true)
-
-/* Alias used for setting GPIOs pins to the logic "low" state */
-#define LOW ((bool)false)
-
-//****************************************************************************
-//
 // Internal variables
 //
 //****************************************************************************
@@ -72,7 +61,7 @@ static uint8_t registerMap[NUM_REGISTERS];
  * \param address The 8-bit register address
  * \return The 8-bit register value
  */
-uint8_t        getRegisterValue(uint8_t address)
+uint8_t getRegisterValue(uint8_t address)
 {
     assert(address < NUM_REGISTERS);
     return registerMap[address];
@@ -105,29 +94,31 @@ void adcStartupRoutine(void)
 
     /* (OPTIONAL) Configure initial device register settings here */
     uint8_t initRegisterMap[NUM_REGISTERS];
-    initRegisterMap[REG_ADDR_ID]        = 0x00; // Read-only register
-    initRegisterMap[REG_ADDR_POWER]     = 0x13; // Enables the internal level shift voltage to the AINCOM pin
-    initRegisterMap[REG_ADDR_INTERFACE] = 0x0E; // Enable the interface automatic time-out, Enable CRC mode
-    initRegisterMap[REG_ADDR_MODE0]     = MODE0_DEFAULT;
-    initRegisterMap[REG_ADDR_MODE1]     = MODE1_DEFAULT;
-    initRegisterMap[REG_ADDR_MODE2]     = 0X50; // Gain 32, DR 2.5SPS
-    initRegisterMap[REG_ADDR_INPMUX]    = INPMUX_DEFAULT;
-    initRegisterMap[REG_ADDR_OFCAL0]    = OFCAL0_DEFAULT;
-    initRegisterMap[REG_ADDR_OFCAL1]    = OFCAL1_DEFAULT;
-    initRegisterMap[REG_ADDR_OFCAL2]    = OFCAL2_DEFAULT;
-    initRegisterMap[REG_ADDR_FSCAL0]    = FSCAL0_DEFAULT;
-    initRegisterMap[REG_ADDR_FSCAL1]    = FSCAL1_DEFAULT;
-    initRegisterMap[REG_ADDR_FSCAL2]    = FSCAL2_DEFAULT;
-    initRegisterMap[REG_ADDR_IDACMUX]   = IDACMUX_DEFAULT;
-    initRegisterMap[REG_ADDR_IDACMAG]   = IDACMAG_DEFAULT;
-    initRegisterMap[REG_ADDR_TDACP]     = TDACP_DEFAULT;
-    initRegisterMap[REG_ADDR_TDACN]     = TDACN_DEFAULT;
-    initRegisterMap[REG_ADDR_GPIOCON]   = GPIOCON_DEFAULT;
-    initRegisterMap[REG_ADDR_GPIODIR]   = GPIODIR_DEFAULT;
-    initRegisterMap[REG_ADDR_GPIODAT]   = GPIODAT_DEFAULT;
+    initRegisterMap[REG_ADDR_ID] = 0x00; // Read-only register
+    // Enables the internal level shift voltage to the AINCOM pin
+    initRegisterMap[REG_ADDR_POWER] = 0x13;
+    // Enable the interface automatic time-out, Enable CRC mode
+    initRegisterMap[REG_ADDR_INTERFACE] = 0x0E;
+    initRegisterMap[REG_ADDR_MODE0] = MODE0_DEFAULT;
+    initRegisterMap[REG_ADDR_MODE1] = MODE1_DEFAULT;
+    initRegisterMap[REG_ADDR_MODE2] = 0X50; // Gain 32, DR 2.5SPS
+    initRegisterMap[REG_ADDR_INPMUX] = INPMUX_DEFAULT;
+    initRegisterMap[REG_ADDR_OFCAL0] = OFCAL0_DEFAULT;
+    initRegisterMap[REG_ADDR_OFCAL1] = OFCAL1_DEFAULT;
+    initRegisterMap[REG_ADDR_OFCAL2] = OFCAL2_DEFAULT;
+    initRegisterMap[REG_ADDR_FSCAL0] = FSCAL0_DEFAULT;
+    initRegisterMap[REG_ADDR_FSCAL1] = FSCAL1_DEFAULT;
+    initRegisterMap[REG_ADDR_FSCAL2] = FSCAL2_DEFAULT;
+    initRegisterMap[REG_ADDR_IDACMUX] = IDACMUX_DEFAULT;
+    initRegisterMap[REG_ADDR_IDACMAG] = IDACMAG_DEFAULT;
+    initRegisterMap[REG_ADDR_TDACP] = TDACP_DEFAULT;
+    initRegisterMap[REG_ADDR_TDACN] = TDACN_DEFAULT;
+    initRegisterMap[REG_ADDR_GPIOCON] = GPIOCON_DEFAULT;
+    initRegisterMap[REG_ADDR_GPIODIR] = GPIODIR_DEFAULT;
+    initRegisterMap[REG_ADDR_GPIODAT] = GPIODAT_DEFAULT;
 #ifdef ADS1263_ONLY_FEATURES
-    initRegisterMap[REG_ADDR_ADC2CFG]  = ADC2CFG_DEFAULT;
-    initRegisterMap[REG_ADDR_ADC2MUX]  = ADC2MUX_DEFAULT;
+    initRegisterMap[REG_ADDR_ADC2CFG] = ADC2CFG_DEFAULT;
+    initRegisterMap[REG_ADDR_ADC2MUX] = ADC2MUX_DEFAULT;
     initRegisterMap[REG_ADDR_ADC2OFC0] = ADC2OFC0_DEFAULT;
     initRegisterMap[REG_ADDR_ADC2OFC1] = ADC2OFC1_DEFAULT;
     initRegisterMap[REG_ADDR_ADC2FSC0] = ADC2FSC0_DEFAULT;
@@ -298,14 +289,14 @@ void sendCommand(uint8_t op_code)
  * \param crc[] pointer to address where CRC byte will be stored
  * \return 32-bit sign-extended conversion result (data only)
  */
-int32_t readData(uint8_t status[], uint8_t data[], uint8_t crc[]) // TODO: Implement read direct command (as a separate function!)
+int32_t readData(uint8_t status[], uint8_t data[],
+                 uint8_t crc[]) // TODO: Implement read direct command (as a separate function!)
 {
     uint8_t DataTx[7] = {0};
     uint8_t DataRx[7] = {0};
 
     /* Calculate command length (bytes) */
-    uint8_t byteLength = 5 + (CRC_BYTE_ENABLED ? 1 : 0) +
-                         (STATUS_BYTE_ENABLED ? 1 : 0);
+    uint8_t byteLength = 5 + (CRC_BYTE_ENABLED ? 1 : 0) + (STATUS_BYTE_ENABLED ? 1 : 0);
 
     /* Build TX array and send it */
     DataTx[0] = OPCODE_RDATA1;
@@ -344,10 +335,10 @@ int32_t readData(uint8_t status[], uint8_t data[], uint8_t crc[]) // TODO: Imple
     }
 
     /* Return the 32-bit sign-extended conversion result */
-    int32_t upperByte    = ((int32_t)DataRx[dataPosition + 0] & 0xFF) << 24;
+    int32_t upperByte = ((int32_t)DataRx[dataPosition + 0] & 0xFF) << 24;
     int32_t upperMidByte = ((int32_t)DataRx[dataPosition + 1] & 0xFF) << 16;
     int32_t lowerMidByte = ((int32_t)DataRx[dataPosition + 2] & 0xFF) << 8;
-    int32_t lowerByte    = ((int32_t)DataRx[dataPosition + 3] & 0xFF) << 0;
+    int32_t lowerByte = ((int32_t)DataRx[dataPosition + 3] & 0xFF) << 0;
     return (upperByte | upperMidByte | lowerMidByte | lowerByte);
 }
 
@@ -367,29 +358,30 @@ int32_t readData(uint8_t status[], uint8_t data[], uint8_t crc[]) // TODO: Imple
  */
 void restoreRegisterDefaults(void)
 {
-    registerMap[REG_ADDR_ID]        = 0x00; // Value of 0x00 indicates that we have not yet read the ID register
-    registerMap[REG_ADDR_POWER]     = POWER_DEFAULT;
+    registerMap[REG_ADDR_ID] =
+        0x00; // Value of 0x00 indicates that we have not yet read the ID register
+    registerMap[REG_ADDR_POWER] = POWER_DEFAULT;
     registerMap[REG_ADDR_INTERFACE] = INTERFACE_DEFAULT;
-    registerMap[REG_ADDR_MODE0]     = MODE0_DEFAULT;
-    registerMap[REG_ADDR_MODE1]     = MODE1_DEFAULT;
-    registerMap[REG_ADDR_MODE2]     = MODE2_DEFAULT;
-    registerMap[REG_ADDR_INPMUX]    = INPMUX_DEFAULT;
-    registerMap[REG_ADDR_OFCAL0]    = OFCAL0_DEFAULT;
-    registerMap[REG_ADDR_OFCAL1]    = OFCAL1_DEFAULT;
-    registerMap[REG_ADDR_OFCAL2]    = OFCAL2_DEFAULT;
-    registerMap[REG_ADDR_FSCAL0]    = FSCAL0_DEFAULT;
-    registerMap[REG_ADDR_FSCAL1]    = FSCAL1_DEFAULT;
-    registerMap[REG_ADDR_FSCAL2]    = FSCAL2_DEFAULT;
-    registerMap[REG_ADDR_IDACMUX]   = IDACMUX_DEFAULT;
-    registerMap[REG_ADDR_IDACMAG]   = IDACMAG_DEFAULT;
-    registerMap[REG_ADDR_TDACP]     = TDACP_DEFAULT;
-    registerMap[REG_ADDR_TDACN]     = TDACN_DEFAULT;
-    registerMap[REG_ADDR_GPIOCON]   = GPIOCON_DEFAULT;
-    registerMap[REG_ADDR_GPIODIR]   = GPIODIR_DEFAULT;
-    registerMap[REG_ADDR_GPIODAT]   = GPIODAT_DEFAULT;
+    registerMap[REG_ADDR_MODE0] = MODE0_DEFAULT;
+    registerMap[REG_ADDR_MODE1] = MODE1_DEFAULT;
+    registerMap[REG_ADDR_MODE2] = MODE2_DEFAULT;
+    registerMap[REG_ADDR_INPMUX] = INPMUX_DEFAULT;
+    registerMap[REG_ADDR_OFCAL0] = OFCAL0_DEFAULT;
+    registerMap[REG_ADDR_OFCAL1] = OFCAL1_DEFAULT;
+    registerMap[REG_ADDR_OFCAL2] = OFCAL2_DEFAULT;
+    registerMap[REG_ADDR_FSCAL0] = FSCAL0_DEFAULT;
+    registerMap[REG_ADDR_FSCAL1] = FSCAL1_DEFAULT;
+    registerMap[REG_ADDR_FSCAL2] = FSCAL2_DEFAULT;
+    registerMap[REG_ADDR_IDACMUX] = IDACMUX_DEFAULT;
+    registerMap[REG_ADDR_IDACMAG] = IDACMAG_DEFAULT;
+    registerMap[REG_ADDR_TDACP] = TDACP_DEFAULT;
+    registerMap[REG_ADDR_TDACN] = TDACN_DEFAULT;
+    registerMap[REG_ADDR_GPIOCON] = GPIOCON_DEFAULT;
+    registerMap[REG_ADDR_GPIODIR] = GPIODIR_DEFAULT;
+    registerMap[REG_ADDR_GPIODAT] = GPIODAT_DEFAULT;
 #ifdef ADS1262_ONLY_FEATURES
-    registerMap[REG_ADDR_ADC2CFG]  = ADC2CFG_DEFAULT;
-    registerMap[REG_ADDR_ADC2MUX]  = ADC2MUX_DEFAULT;
+    registerMap[REG_ADDR_ADC2CFG] = ADC2CFG_DEFAULT;
+    registerMap[REG_ADDR_ADC2MUX] = ADC2MUX_DEFAULT;
     registerMap[REG_ADDR_ADC2OFC0] = ADC2OFC0_DEFAULT;
     registerMap[REG_ADDR_ADC2OFC1] = ADC2OFC1_DEFAULT;
     registerMap[REG_ADDR_ADC2FSC0] = ADC2FSC0_DEFAULT;
@@ -456,13 +448,13 @@ uint8_t calculateCRC(const uint8_t dataBytes[], uint8_t numBytes)
      * https://e2e.ti.com/support/microcontrollers/msp430/f/166/t/679200
      */
     uint_fast8_t       i;
-    uint_fast8_t       crc = 0xFFu;            /* Initial value of crc register     */
-    uint_fast8_t       crcMSb;                 /* Most significant bit of crc byte  */
-    const uint_fast8_t poly     = 0x07u;       /* CRC polynomial byte               */
-    uint_fast8_t       shift_by = 0u;          /* Intermediate variable             */
-    uint32_t           data     = 0u;          /* Data storage variable             */
-    uint32_t           msbMask  = 0x80000000u; /* Points to the next data bit       */
-    uint32_t           dataMSb;                /* Most significant bit of data int  */
+    uint_fast8_t       crc = 0xFFu;           /* Initial value of crc register     */
+    uint_fast8_t       crcMSb;                /* Most significant bit of crc byte  */
+    const uint_fast8_t poly = 0x07u;          /* CRC polynomial byte               */
+    uint_fast8_t       shift_by = 0u;         /* Intermediate variable             */
+    uint32_t           data = 0u;             /* Data storage variable             */
+    uint32_t           msbMask = 0x80000000u; /* Points to the next data bit       */
+    uint32_t           dataMSb;               /* Most significant bit of data int  */
 
     /* Construct data word from data bytes */
     for (i = 0; i < numBytes; i++)
@@ -480,7 +472,7 @@ uint8_t calculateCRC(const uint8_t dataBytes[], uint8_t numBytes)
     {
         // Check MSB's of data and crc
         dataMSb = data & msbMask;
-        crcMSb  = crc & 0x80u;
+        crcMSb = crc & 0x80u;
 
         // Shift crc byte
         crc <<= 1;
@@ -516,7 +508,7 @@ uint8_t calculateChecksum(const uint8_t dataBytes[], uint8_t numBytes)
     uint_fast8_t checksum = 0x9Bu;
 
     /* Checksum calculation */
-    uint8_t      i;
+    uint8_t i;
     for (i = 0; i < numBytes; i++)
     {
         checksum = (checksum + dataBytes[i]) & 0xFFu;

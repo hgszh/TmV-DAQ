@@ -33,6 +33,7 @@
 #include "dma_uart.h"
 #include "freeRTOS.h"
 #include "task.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -65,15 +66,6 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void test_task(void *arg)
-{
-    while (1)
-    {
-        print_board_uid(&RS485_1);
-        HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
-        vTaskDelay(1000);
-    }
-}
 /* USER CODE END 0 */
 
 /**
@@ -116,7 +108,7 @@ int main(void)
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
     start_rs485_demo_task();
-    xTaskCreate(test_task, "test_task", 256, NULL, 1, NULL);
+    start_rs485_1_printf_task();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */

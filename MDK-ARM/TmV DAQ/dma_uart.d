@@ -10,8 +10,6 @@ tmv\ daq/dma_uart.o: ..\Utility\dma_uart\dma_uart.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM0\portmacro.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\stream_buffer.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
   ..\Core\Inc\usart.h ..\Core\Inc\main.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal.h \
   ..\Core\Inc\stm32g0xx_hal_conf.h \
@@ -57,7 +55,12 @@ tmv\ daq/dma_uart.o: ..\Utility\dma_uart\dma_uart.c \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart_ex.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdbool.h \
   ..\Core\Inc\dma.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdarg.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\string.h
+  D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\string.h \
+  ..\Utility\ads1262\ads1262.h \
+  D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\assert.h \
+  ..\Utility\ads1262\hal.h ..\Core\Inc\gpio.h

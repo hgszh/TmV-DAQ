@@ -10,6 +10,8 @@
         "usart.h": "c",
         "event_groups.h": "c",
         "initializer_list": "c",
-        "stream_buffer.h": "c"
+        "stream_buffer.h": "c",
+        "freertos.h": "c",
+        "task.h": "c"
     }
 }

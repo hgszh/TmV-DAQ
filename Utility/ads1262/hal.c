@@ -31,18 +31,8 @@
  * --/COPYRIGHT--*/
 
 #include "hal.h"
-
-//****************************************************************************
-//
-// Internal variables and macros
-//
-//****************************************************************************
-
-/** Alias used for setting GPIOs pins to the logic "high" state */
-#define HIGH ((bool)true)
-
-/** Alias used for setting GPIOs pins to the logic "low" state */
-#define LOW ((bool)false)
+#include "FreeRTOS.h"
+#include "task.h"
 
 //****************************************************************************
 //
@@ -51,23 +41,21 @@
 //****************************************************************************
 
 /**
- * \fn void delay_ms(uint32_t delay_time_ms, uint32_t sysClock_Hz)
+ * \fn void delay_ms(uint32_t delay_time_ms)
  * \brief Provides a timing delay with ms resolution
  * \param delay_time_ms number of ms to delay
  */
 void delay_ms(uint32_t delay_time_ms)
 {
-    /* --- TODO: INSERT YOUR CODE HERE --- */
+    vTaskDelay(delay_time_ms);
 }
 
-/**
- * \fn void delay_ns(uint32_t delay_time_us, uint32_t sysClock_Hz)
- * \brief Provides a timing delay with ns resolution
- * \param delay_time_us number of us to delay
- */
-void delay_ns(uint32_t delay_time_us)
+void delay_200ns(void)
 {
-    /* --- TODO: INSERT YOUR CODE HERE --- */
+    for (size_t i = 0; i < 13; i++)
+    {
+        __NOP();
+    }
 }
 
 //****************************************************************************
@@ -85,37 +73,11 @@ void delay_ns(uint32_t delay_time_us)
  */
 void spiSendReceiveArrays(uint8_t DataTx[], uint8_t DataRx[], uint8_t byteLength)
 {
-    /*  --- TODO: INSERT YOUR CODE HERE ---
-     *
-     *  This function should send and receive multiple bytes over the SPI.
-     *
-     *  A typical SPI send/receive sequence may look like the following:
-     *  1) Make sure SPI receive buffer is empty
-     *  2) Set the /CS pin low (if controlled by GPIO)
-     *  3) Send command bytes to SPI transmit buffer
-     *  4) Wait for SPI receive interrupt
-     *  5) Retrieve data from SPI receive buffer
-     *  6) Set the /CS pin high (if controlled by GPIO)
-     *
-     */
-
-    /* Set the nCS pin LOW */
-    //   setCS(LOW);
-
-    /* Remove any residual or old data from the receive FIFO */
-    //   uint32_t junk;
-    //  while (SSIDataGetNonBlocking(SSI3_BASE, &junk))
-    ;
-
-    /* SSI TX & RX */
-    //  uint8_t i;
-    //   for (i = 0; i < byteLength; i++)
-    //  {
-    //      DataRx[i] = spiSendReceiveByte(DataTx[i]);
-    //   }
-
-    /* Set the nCS pin HIGH */
-    //   setCS(HIGH);
+    uint8_t i;
+    for (i = 0; i < byteLength; i++)
+    {
+        DataRx[i] = spiSendReceiveByte(DataTx[i]);
+    }
 }
 
 /**
@@ -126,21 +88,17 @@ void spiSendReceiveArrays(uint8_t DataTx[], uint8_t DataRx[], uint8_t byteLength
  */
 uint8_t spiSendReceiveByte(uint8_t dataTx)
 {
-    /*  --- TODO: INSERT YOUR CODE HERE ---
-     *  This function should send and receive single bytes over the SPI.
-     *  NOTE: This function does not control the /CS pin to allow for
-     *  more programming flexibility.
-     */
-
-    /* Remove any residual or old data from the receive FIFO */
-  //  uint32_t junk;
-//    while (SSIDataGetNonBlocking(SSI3_BASE, &junk))
-        ;
-
-    /* SSI TX & RX */
-    uint8_t dataRx;
-  //  MAP_SSIDataPut(SSI3_BASE, dataTx);
-  //  MAP_SSIDataGet(SSI3_BASE, &dataRx);
-
+    vTaskSuspendAll();
+    uint8_t dataRx = 0;
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        SET_SCLK(HIGH);
+        SET_MOSI((dataTx >> (7 - i)) & 0x01);
+        delay_200ns();
+        SET_SCLK(LOW);
+        dataRx = (dataRx << 1) | GET_MISO();
+        delay_200ns();
+    }
+    xTaskResumeAll();
     return dataRx;
 }
