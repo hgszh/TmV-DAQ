@@ -58,9 +58,6 @@
 void delay_ms(uint32_t delay_time_ms)
 {
     /* --- TODO: INSERT YOUR CODE HERE --- */
-
-    const uint32_t cycles_per_loop = 3;
-    MAP_SysCtlDelay(delay_time_ms * getSysClock() / (cycles_per_loop * 1000u));
 }
 
 /**
@@ -71,9 +68,6 @@ void delay_ms(uint32_t delay_time_ms)
 void delay_ns(uint32_t delay_time_us)
 {
     /* --- TODO: INSERT YOUR CODE HERE --- */
-
-    const uint32_t cycles_per_loop = 3;
-    MAP_SysCtlDelay(delay_time_us * getSysClock() / (cycles_per_loop * 1000000u));
 }
 
 //****************************************************************************
@@ -106,22 +100,22 @@ void spiSendReceiveArrays(uint8_t DataTx[], uint8_t DataRx[], uint8_t byteLength
      */
 
     /* Set the nCS pin LOW */
-    setCS(LOW);
+    //   setCS(LOW);
 
     /* Remove any residual or old data from the receive FIFO */
-    uint32_t junk;
-    while (SSIDataGetNonBlocking(SSI3_BASE, &junk))
-        ;
+    //   uint32_t junk;
+    //  while (SSIDataGetNonBlocking(SSI3_BASE, &junk))
+    ;
 
     /* SSI TX & RX */
-    uint8_t i;
-    for (i = 0; i < byteLength; i++)
-    {
-        DataRx[i] = spiSendReceiveByte(DataTx[i]);
-    }
+    //  uint8_t i;
+    //   for (i = 0; i < byteLength; i++)
+    //  {
+    //      DataRx[i] = spiSendReceiveByte(DataTx[i]);
+    //   }
 
     /* Set the nCS pin HIGH */
-    setCS(HIGH);
+    //   setCS(HIGH);
 }
 
 /**
@@ -139,14 +133,14 @@ uint8_t spiSendReceiveByte(uint8_t dataTx)
      */
 
     /* Remove any residual or old data from the receive FIFO */
-    uint32_t junk;
-    while (SSIDataGetNonBlocking(SSI3_BASE, &junk))
+  //  uint32_t junk;
+//    while (SSIDataGetNonBlocking(SSI3_BASE, &junk))
         ;
 
     /* SSI TX & RX */
-    uint8_t dataRx;
-    MAP_SSIDataPut(SSI3_BASE, dataTx);
-    MAP_SSIDataGet(SSI3_BASE, &dataRx);
+   // uint8_t dataRx;
+  //  MAP_SSIDataPut(SSI3_BASE, dataTx);
+  //  MAP_SSIDataGet(SSI3_BASE, &dataRx);
 
     return dataRx;
 }

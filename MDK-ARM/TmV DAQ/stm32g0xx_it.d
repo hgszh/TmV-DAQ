@@ -36,8 +36,12 @@ tmv\ daq/stm32g0xx_it.o: ..\Core\Src\stm32g0xx_it.c ..\Core\Inc\main.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_pcd_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_pwr.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_pwr_ex.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_rtc.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_rtc_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_spi.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_spi_ex.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_tim.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_tim_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart_ex.h \
   ..\Core\Inc\stm32g0xx_it.h

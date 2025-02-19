@@ -16,6 +16,9 @@
                 "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Inc",
                 "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\MSC\\Inc",
                 "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\ads1262",
+                "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include",
+                "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS",
+                "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\RVDS\\ARM_CM0",
                 "D:\\Program Files\\MCU Keli\\ARM\\ARMCLANG\\include",
                 "D:\\Program Files\\MCU Keli\\ARM\\ARMCLANG\\include\\arm_linux",
                 "D:\\Program Files\\MCU Keli\\ARM\\ARMCLANG\\include\\arm_linux_compat",
@@ -25,7 +28,9 @@
                 "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Drivers\\STM32G0xx_HAL_Driver\\Src",
                 "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\Third_Party\\FatFs\\src\\option",
                 "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\ST\\STM32_USB_Device_Library\\Core\\Src",
-                "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\MSC\\Src"
+                "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\ST\\STM32_USB_Device_Library\\Class\\MSC\\Src",
+                "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\Third_Party\\FreeRTOS\\Source",
+                "c:\\Users\\hgszh\\Desktop\\温度及mV电压采集板卡\\TmV DAQ\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

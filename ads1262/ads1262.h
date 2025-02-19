@@ -891,7 +891,6 @@ int32_t readData(uint8_t status[], uint8_t data[], uint8_t crc[]);
 uint8_t readSingleRegister(uint8_t address);
 void    readMultipleRegisters(uint8_t startAddress, uint8_t count);
 void    sendCommand(uint8_t op_code);
-void    startConversions(void);
 void    writeSingleRegister(uint8_t address, uint8_t data);
 void    writeMultipleRegisters(uint8_t startAddress, uint8_t count, const uint8_t regData[]);
 void    restoreRegisterDefaults(void);

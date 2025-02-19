@@ -41,8 +41,25 @@ tmv\ daq/user_diskio.o: ..\FATFS\Target\user_diskio.c \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_pcd_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_pwr.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_pwr_ex.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_rtc.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_rtc_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_spi.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_spi_ex.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_tim.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_tim_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart_ex.h \
-  D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdlib.h
+  ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
+  ..\Core\Inc\FreeRTOSConfig.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM0\portmacro.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h
