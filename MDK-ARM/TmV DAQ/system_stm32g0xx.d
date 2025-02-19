@@ -30,7 +30,6 @@ tmv\ daq/system_stm32g0xx.o: ..\Core\Src\system_stm32g0xx.c \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_flash_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_i2c.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_i2c_ex.h \
-  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_iwdg.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_pcd.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_ll_usb.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_pcd_ex.h \

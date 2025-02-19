@@ -22,20 +22,31 @@ Dialog DLL:      TARMCM1.DLL V1.14.6.0
  
 <h2>Project:</h2>
 c:\Users\hgszh\Desktop\温度及mV电压采集板卡\TmV DAQ\MDK-ARM\TmV DAQ.uvprojx
-Project File Date:  02/18/2025
+Project File Date:  02/19/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.19', folder: 'D:\Program Files\MCU Keli\ARM\ARMCLANG\Bin'
 Build target 'TmV DAQ'
+compiling main.c...
+compiling dma_uart.c...
+linking...
+Program Size: Code=35844 RO-data=412 RW-data=324 ZI-data=16556  
+FromELF: creating hex file...
 "TmV DAQ\TmV DAQ.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
-                ARM.CMSIS.5.9.0
+                https://www.keil.com/pack/ARM.CMSIS.6.1.0.pack
+                ARM.CMSIS.6.1.0
                 CMSIS (Common Microcontroller Software Interface Standard)
-   * Component: CORE Version: 5.6.0
+   * Component: CORE Version: 6.1.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.ARM_Compiler.1.7.2.pack
+                Keil.ARM_Compiler.1.7.2
+                Keil ARM Compiler extensions for ARM Compiler 5 and ARM Compiler 6
+   * Component: STDERR Variant: Breakpoint Version: 1.2.0
 
 Package Vendor: Keil
                 https://www.keil.com/pack/Keil.STM32G0xx_DFP.1.5.0.pack
@@ -44,14 +55,17 @@ Package Vendor: Keil
 
 <h2>Collection of Component include folders:</h2>
   ./RTE/_TmV_DAQ
-  D:/Program Files/MCU Keli/PACK/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+  D:/Program Files/MCU Keli/PACK/ARM/CMSIS/6.1.0/CMSIS/Core/Include
   D:/Program Files/MCU Keli/PACK/Keil/STM32G0xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G0xx/Include
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:5.6.0
+   * Component: ARM::CMSIS:CORE:6.1.0
       Include file:  CMSIS/Core/Include/tz_context.h
-Build Time Elapsed:  00:00:01
+
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDERR:Breakpoint:1.2.0
+      Source file:   Source/retarget_io.c
+Build Time Elapsed:  00:00:13
 </pre>
 </body>
 </html>

@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "stm32g0xx_hal.h": "c",
+        "stdarg.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c",
+        "stdio.h": "c",
+        "dma_uart.h": "c",
+        "stdbool.h": "c",
+        "usart.h": "c",
+        "event_groups.h": "c",
+        "initializer_list": "c",
+        "stream_buffer.h": "c"
+    }
+}

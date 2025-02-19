@@ -20,9 +20,9 @@
 #include "main.h"
 #include "app_fatfs.h"
 #include "cmsis_os.h"
+#include "dma.h"
 #include "gpio.h"
 #include "i2c.h"
-#include "iwdg.h"
 #include "rtc.h"
 #include "spi.h"
 #include "usart.h"
@@ -30,7 +30,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "dma_uart.h"
+#include "freeRTOS.h"
+#include "task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,14 +65,22 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void test_task(void *arg)
+{
+    while (1)
+    {
+        print_board_uid(&RS485_1);
+        HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
+        vTaskDelay(1000);
+    }
+}
 /* USER CODE END 0 */
 
 /**
  * @brief  The application entry point.
  * @retval int
  */
-int  main(void)
+int main(void)
 {
 
     /* USER CODE BEGIN 1 */
@@ -95,7 +105,7 @@ int  main(void)
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
-    MX_IWDG_Init();
+    MX_DMA_Init();
     MX_USART2_UART_Init();
     MX_SPI1_Init();
     if (MX_FATFS_Init() != APP_OK)
@@ -106,7 +116,8 @@ int  main(void)
     MX_USART3_UART_Init();
     MX_RTC_Init();
     /* USER CODE BEGIN 2 */
-
+    start_rs485_demo_task();
+    xTaskCreate(test_task, "test_task", 256, NULL, 1, NULL);
     /* USER CODE END 2 */
 
     /* Call init function for freertos objects (in cmsis_os2.c) */
@@ -144,19 +155,21 @@ void SystemClock_Config(void)
     /** Initializes the RCC Oscillators according to the specified parameters
      * in the RCC_OscInitTypeDef structure.
      */
-    RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_HSI48;
-    RCC_OscInitStruct.HSIState            = RCC_HSI_ON;
-    RCC_OscInitStruct.HSI48State          = RCC_HSI48_ON;
-    RCC_OscInitStruct.HSIDiv              = RCC_HSI_DIV1;
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI |
+                                       RCC_OSCILLATORTYPE_LSI |
+                                       RCC_OSCILLATORTYPE_HSI48;
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+    RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
+    RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;
     RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-    RCC_OscInitStruct.LSIState            = RCC_LSI_ON;
-    RCC_OscInitStruct.PLL.PLLState        = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource       = RCC_PLLSOURCE_HSI;
-    RCC_OscInitStruct.PLL.PLLM            = RCC_PLLM_DIV1;
-    RCC_OscInitStruct.PLL.PLLN            = 8;
-    RCC_OscInitStruct.PLL.PLLP            = RCC_PLLP_DIV2;
-    RCC_OscInitStruct.PLL.PLLQ            = RCC_PLLQ_DIV2;
-    RCC_OscInitStruct.PLL.PLLR            = RCC_PLLR_DIV2;
+    RCC_OscInitStruct.LSIState = RCC_LSI_ON;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
+    RCC_OscInitStruct.PLL.PLLN = 8;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+    RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
     {
         Error_Handler();
@@ -164,9 +177,10 @@ void SystemClock_Config(void)
 
     /** Initializes the CPU, AHB and APB buses clocks
      */
-    RCC_ClkInitStruct.ClockType      = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1;
-    RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
-    RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.ClockType =
+        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
     if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)

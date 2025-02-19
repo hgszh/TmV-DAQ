@@ -55,6 +55,12 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart2_tx;
+extern DMA_HandleTypeDef hdma_usart3_rx;
+extern DMA_HandleTypeDef hdma_usart3_tx;
+extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart3;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -102,6 +108,49 @@ void HardFault_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles DMA1 channel 1 interrupt.
+  */
+void DMA1_Channel1_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
+
+  /* USER CODE END DMA1_Channel1_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart2_rx);
+  /* USER CODE BEGIN DMA1_Channel1_IRQn 1 */
+
+  /* USER CODE END DMA1_Channel1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA1 channel 2 and channel 3 interrupts.
+  */
+void DMA1_Channel2_3_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Channel2_3_IRQn 0 */
+
+  /* USER CODE END DMA1_Channel2_3_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart2_tx);
+  HAL_DMA_IRQHandler(&hdma_usart3_rx);
+  /* USER CODE BEGIN DMA1_Channel2_3_IRQn 1 */
+
+  /* USER CODE END DMA1_Channel2_3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA1 Ch4 to Ch7, DMA2 Ch1 to Ch5 and DMAMUX1 Overrun Interrupts.
+  */
+void DMA1_Ch4_7_DMA2_Ch1_5_DMAMUX1_OVR_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Ch4_7_DMA2_Ch1_5_DMAMUX1_OVR_IRQn 0 */
+
+  /* USER CODE END DMA1_Ch4_7_DMA2_Ch1_5_DMAMUX1_OVR_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart3_tx);
+  /* USER CODE BEGIN DMA1_Ch4_7_DMA2_Ch1_5_DMAMUX1_OVR_IRQn 1 */
+
+  /* USER CODE END DMA1_Ch4_7_DMA2_Ch1_5_DMAMUX1_OVR_IRQn 1 */
+}
+
+/**
   * @brief This function handles TIM6, DAC and LPTIM1 global Interrupts.
   */
 void TIM6_DAC_LPTIM1_IRQHandler(void)
@@ -113,6 +162,34 @@ void TIM6_DAC_LPTIM1_IRQHandler(void)
   /* USER CODE BEGIN TIM6_DAC_LPTIM1_IRQn 1 */
 
   /* USER CODE END TIM6_DAC_LPTIM1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART2 + LPUART2 Interrupt.
+  */
+void USART2_LPUART2_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART2_LPUART2_IRQn 0 */
+
+  /* USER CODE END USART2_LPUART2_IRQn 0 */
+  HAL_UART_IRQHandler(&huart2);
+  /* USER CODE BEGIN USART2_LPUART2_IRQn 1 */
+
+  /* USER CODE END USART2_LPUART2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART3, USART4, USART5, USART6, LPUART1 globlal Interrupts (combined with EXTI 28).
+  */
+void USART3_4_5_6_LPUART1_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART3_4_5_6_LPUART1_IRQn 0 */
+
+  /* USER CODE END USART3_4_5_6_LPUART1_IRQn 0 */
+  HAL_UART_IRQHandler(&huart3);
+  /* USER CODE BEGIN USART3_4_5_6_LPUART1_IRQn 1 */
+
+  /* USER CODE END USART3_4_5_6_LPUART1_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

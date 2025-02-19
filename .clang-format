@@ -1,14 +1,12 @@
 ---
 Language: Cpp
 BasedOnStyle: LLVM
-AlignConsecutiveDeclarations: AcrossEmptyLinesAndComments
-AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
 AlignConsecutiveMacros: true
-AlignTrailingComments: true
-ColumnLimit: 0
-BreakBeforeBraces: Allman
+ColumnLimit: 80
 IndentWidth: 4
-TabWidth: 4
 UseTab: Never
-AlignAfterOpenBracket: DontAlign
-AlignConsecutiveDeclarationsMinWidth: 20                  # 关闭行宽限制
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: Empty
+IndentCaseLabels: true
+ReflowComments: false  # 禁止注释的自动换行
