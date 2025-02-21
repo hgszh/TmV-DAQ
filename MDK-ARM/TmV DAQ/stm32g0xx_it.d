@@ -1,4 +1,5 @@
-tmv\ daq/stm32g0xx_it.o: ..\Core\Src\stm32g0xx_it.c ..\Core\Inc\main.h \
+tmv\ daq/stm32g0xx_it.o: ..\Core\Src\stm32g0xx_it.c \
+  ..\Core\Inc\stm32g0xx_it.h ..\Core\Inc\main.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal.h \
   ..\Core\Inc\stm32g0xx_hal_conf.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_rcc.h \
@@ -43,4 +44,9 @@ tmv\ daq/stm32g0xx_it.o: ..\Core\Src\stm32g0xx_it.c ..\Core\Inc\main.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_tim_ex.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart_ex.h \
-  ..\Core\Inc\stm32g0xx_it.h
+  ..\Middlewares\ST\EEPROM_Emul\Core\eeprom_emul.h \
+  ..\Middlewares\ST\EEPROM_Emul\Core\eeprom_emul_conf.h \
+  ..\Middlewares\ST\EEPROM_Emul\Core\eeprom_emul_types.h \
+  ..\Middlewares\ST\EEPROM_Emul\Porting\STM32G0\flash_interface.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_ll_crc.h \
+  ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_ll_bus.h

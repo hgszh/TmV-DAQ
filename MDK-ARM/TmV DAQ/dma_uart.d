@@ -54,13 +54,10 @@ tmv\ daq/dma_uart.o: ..\Utility\dma_uart\dma_uart.c \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart.h \
   ..\Drivers\STM32G0xx_HAL_Driver\Inc\stm32g0xx_hal_uart_ex.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdbool.h \
-  ..\Core\Inc\dma.h \
+  ..\Core\Inc\dma.h ..\Utility\measure\measure_millivolt.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdarg.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\Utility\ads1262\ads1262.h \
-  D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\assert.h \
-  ..\Utility\ads1262\hal.h ..\Core\Inc\gpio.h
+  D:\Program\ Files\MCU\ Keli\ARM\ARMCLANG\Bin\..\include\string.h

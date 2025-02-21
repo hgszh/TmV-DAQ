@@ -88,7 +88,7 @@ void spiSendReceiveArrays(uint8_t DataTx[], uint8_t DataRx[], uint8_t byteLength
  */
 uint8_t spiSendReceiveByte(uint8_t dataTx)
 {
-    vTaskSuspendAll();
+    taskENTER_CRITICAL();
     uint8_t dataRx = 0;
     for (uint8_t i = 0; i < 8; i++)
     {
@@ -99,6 +99,6 @@ uint8_t spiSendReceiveByte(uint8_t dataTx)
         dataRx = (dataRx << 1) | GET_MISO();
         delay_200ns();
     }
-    xTaskResumeAll();
+    taskEXIT_CRITICAL();
     return dataRx;
 }

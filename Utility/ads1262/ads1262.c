@@ -68,10 +68,10 @@ uint8_t getRegisterValue(uint8_t address)
 }
 
 /**
- * \fn void adcStartupRoutine(void)
+ * \fn void adcInit(void)
  * \brief Startup function to be called before communicating with the ADC
  */
-void adcStartupRoutine(void)
+void adcInit(void)
 {
     /* (OPTIONAL) Provide additional delay time for power supply settling */
     delay_ms(50);
@@ -99,7 +99,7 @@ void adcStartupRoutine(void)
     initRegisterMap[REG_ADDR_POWER] = 0x13;
     // Enable the interface automatic time-out, Enable CRC mode
     initRegisterMap[REG_ADDR_INTERFACE] = 0x0E;
-    initRegisterMap[REG_ADDR_MODE0] = MODE0_DEFAULT;
+    initRegisterMap[REG_ADDR_MODE0] = 0x40; // Pulse conversion
     initRegisterMap[REG_ADDR_MODE1] = MODE1_DEFAULT;
     initRegisterMap[REG_ADDR_MODE2] = 0X50; // Gain 32, DR 2.5SPS
     initRegisterMap[REG_ADDR_INPMUX] = INPMUX_DEFAULT;
@@ -133,7 +133,7 @@ void adcStartupRoutine(void)
 
     /* (OPTIONAL) Start ADC conversions with the SPI command.*/
     /*Not needed if the START pin has already been set HIGH.*/
-    sendCommand(OPCODE_START1);
+    // sendCommand(OPCODE_START1);
 }
 
 /**

@@ -1,5 +1,12 @@
 {
     "files.associations": {
-        "ads1262.h": "c"
+        "ads1262.h": "c",
+        "hal.h": "c",
+        "measure_millivolt.h": "c",
+        "task.h": "c",
+        "dma_uart.h": "c",
+        "eeprom_emul.h": "c",
+        "flash_interface.h": "c",
+        "eeprom_emul_conf.h": "c"
     }
 }

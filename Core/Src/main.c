@@ -31,7 +31,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "dma_uart.h"
+#include "eeprom_emul.h"
 #include "freeRTOS.h"
+#include "measure_millivolt.h"
 #include "task.h"
 
 /* USER CODE END Includes */
@@ -60,6 +62,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
+static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -106,8 +109,22 @@ int main(void)
   MX_I2C3_Init();
   MX_USART3_UART_Init();
   MX_RTC_Init();
+
+  /* Initialize interrupts */
+  MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
+    /* Unlock the Flash Program Erase controller */
+    HAL_FLASH_Unlock();
+    /* Activate NMI generation when two errors are detected */
+    __HAL_FLASH_ENABLE_IT(FLASH_IT_ECCC);
+    EE_Status status = EE_Init(EE_FORCED_ERASE);
+    if (status != EE_OK)
+    {
+        Error_Handler();
+    }
+
     start_rs485_demo_task();
+    start_measure_millivolt_task();
     start_rs485_1_printf_task();
   /* USER CODE END 2 */
 
@@ -177,6 +194,17 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief NVIC Configuration.
+  * @retval None
+  */
+static void MX_NVIC_Init(void)
+{
+  /* FLASH_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(FLASH_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(FLASH_IRQn);
 }
 
 /* USER CODE BEGIN 4 */

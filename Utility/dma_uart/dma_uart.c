@@ -1,5 +1,6 @@
 #include "dma_uart.h"
 #include "dma.h"
+#include "measure_millivolt.h"
 #include "task.h"
 #include <stdarg.h>
 #include <stdio.h>
@@ -47,7 +48,7 @@ void init_board_uart(UART_HandleTypeDef *huart)
  */
 void start_rs485_demo_task(void)
 {
-    xTaskCreate(rs485_demo_task, "rs485_demo_task", 512, NULL, 3, &xUartReceiverTaskHandle);
+    xTaskCreate(rs485_demo_task, "rs485_demo_task", 256, NULL, 3, &xUartReceiverTaskHandle);
 }
 
 /**
@@ -56,7 +57,7 @@ void start_rs485_demo_task(void)
  */
 void start_rs485_1_printf_task(void)
 {
-    xTaskCreate(rs485_1_printf_task, "rs485_1_printf_task", 512, NULL, 1, NULL);
+    xTaskCreate(rs485_1_printf_task, "rs485_1_printf_task", 256, NULL, 2, NULL);
 }
 
 /**
@@ -258,7 +259,7 @@ static void rs485_demo_task(void *pvParameters)
                 vTaskDelay(5000);
                 for (size_t i = 0; i < 100; i++)
                 {
-                    board_printf(&RS485_1, L_GREEN "Received %d bytes:\n" NONE, read);
+                    board_printf(&RS485_1, L_BLUE "Received %d bytes:\n" NONE, read);
                     board_printf(&RS485_1, "%s\n", buffer);
                     vTaskDelay(100);
                     HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
@@ -269,7 +270,6 @@ static void rs485_demo_task(void *pvParameters)
     }
 }
 
-#include "ads1262.h"
 /**
  * @brief RS485_1打印任务
  * @param pvParameters 任务参数（未使用）
@@ -277,11 +277,14 @@ static void rs485_demo_task(void *pvParameters)
  */
 static void rs485_1_printf_task(void *pvParameters)
 {
-    adcStartupRoutine();
+    // calibrate_millivolt_offset();
+    calibrate_millivolt_gain(19.004, 0);
+    float ch1, ch2;
     while (1)
     {
-        print_board_uid(&RS485_1);
         vTaskDelay(1000);
+        get_millivolt(&ch1, &ch2);
+        board_printf(&RS485_1, "CH1: %.5f mV, CH2: %.5f mV\n" NONE, ch1, ch2);
     }
 }
 
